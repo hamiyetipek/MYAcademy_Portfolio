@@ -67,6 +67,17 @@ dotnet run
 * **Genel Özet (Dashboard):** Proje, yetenek, eğitim, deneyim ve mesaj sayıları ile kategori dağılımı ve son kayıtlar.
 * **CRUD Modülleri:** Hakkımda, eğitim, deneyim, yetenek, kategori ve proje kayıtları üzerinde ekleme, güncelleme, listeleme ve silme işlemleri.
 * **Mesaj ve Dosya Yönetimi:** Gelen mesajların incelenmesi, okundu/okunmadı takibi, görsel yükleme ve CV güncelleme işlemleri.
+### Ekran Görüntüleri
+<img width="1886" height="895" alt="Ekran görüntüsü 2026-11-23 185933" src="https://github.com/user-attachments/assets/a671836e-0810-4ef9-b7c5-5a880fe54478" />
+<img width="1917" height="906" alt="Ekran görüntüsü 2026-11-23 185841" src="https://github.com/user-attachments/assets/fbcf7bb4-58ae-4b85-a0a8-90c87cc52194" />
+<img width="1895" height="906" alt="Ekran görüntüsü 2026-11-23 190041" src="https://github.com/user-attachments/assets/1b52e6ad-0778-4f32-89d3-cf36861ecbd3" />
+<img width="1902" height="892" alt="Ekran görüntüsü 2026-11-23 190236" src="https://github.com/user-attachments/assets/d6353e16-481d-4f42-a97c-e7cddf0df37d" />
+<img width="1916" height="917" alt="Ekran görüntüsü 2026-11-23 185852" src="https://github.com/user-attachments/assets/9320091f-efc3-4e6d-82b8-6b68cd45cbc7" />
+
+
+
+
+
 
 ## Klasör Yapısı
 
