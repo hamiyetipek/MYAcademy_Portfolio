@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Hamiyet\\OneDrive\\Yeni klas\u00F6r\\MYAcademy_Portfolio\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2F4D549A-0D40-4DC2-8B3E-B1CDBD6DBAC3}|MYAcademy_Portfolio\\MYAcademy_Portfolio.csproj|c:\\users\\hamiyet\\onedrive\\yeni klas\u00F6r\\myacademy_portfolio\\myacademy_portfolio\\views\\default\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2F4D549A-0D40-4DC2-8B3E-B1CDBD6DBAC3}|MYAcademy_Portfolio\\MYAcademy_Portfolio.csproj|solutionrelative:myacademy_portfolio\\views\\default\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{244df7ea-d757-4b52-b92c-efd2d3402c91}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e506b91c-c606-466a-90a9-123d1d1e12b3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Hamiyet\\OneDrive\\Yeni klas\u00F6r\\MYAcademy_Portfolio\\MYAcademy_Portfolio\\Views\\Default\\Index.cshtml",
+              "RelativeDocumentMoniker": "MYAcademy_Portfolio\\Views\\Default\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Hamiyet\\OneDrive\\Yeni klas\u00F6r\\MYAcademy_Portfolio\\MYAcademy_Portfolio\\Views\\Default\\Index.cshtml",
+              "RelativeToolTip": "MYAcademy_Portfolio\\Views\\Default\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-23T15:59:08.744Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

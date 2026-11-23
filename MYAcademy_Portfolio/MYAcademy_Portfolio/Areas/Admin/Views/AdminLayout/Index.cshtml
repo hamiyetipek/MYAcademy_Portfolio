@@ -1,0 +1,537 @@
+﻿@{
+    Layout = null;
+
+    var area = ViewContext.RouteData.Values["area"]?.ToString();
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    var pageTitle = ViewData["Title"]?.ToString() ?? action;
+
+    string IsNavActive(string ctrl) =>
+        string.Equals(controller, ctrl, StringComparison.OrdinalIgnoreCase) ? "is-current" : "";
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@pageTitle | Hamiyet İpek — Kontrol Paneli</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <style>
+        :root {
+            --panel-navy: #182236;
+            --panel-navy-elevated: #23304A;
+            --panel-navy-active: #2E3F61;
+            --panel-sidebar-fg: #DCE4F2;
+            --panel-sidebar-muted: rgba(220, 228, 242, 0.52);
+            --panel-canvas: #FCF9F7;
+            --panel-surface: #FFFFFF;
+            --panel-ink: #1A253A;
+            --panel-ink-muted: #5E6B82;
+            --panel-coral: #D95D43;
+            --panel-coral-dark: #BD4931;
+            --panel-coral-soft: #FDE4DC;
+            --panel-line: #ECE2DC;
+            --panel-topbar-h: 64px;
+            --panel-aside-w: 256px;
+            --panel-radius: 12px;
+            --panel-ease: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background-color: var(--panel-canvas);
+            color: var(--panel-ink);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.925rem;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--panel-ink);
+            letter-spacing: -0.02em;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #D8CCC5;
+            border-radius: 999px;
+        }
+
+        /* ========== TAM GENİŞLİK ÜST ÇUBUK ========== */
+        .panel-topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--panel-topbar-h);
+            background: var(--panel-navy);
+            color: #FFFFFF;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+            z-index: 1050;
+        }
+
+        .panel-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 11px;
+            text-decoration: none;
+            color: #FFFFFF;
+        }
+
+        .panel-brand-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #E8745B 0%, #C94A31 100%);
+            color: #FFFFFF;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            font-size: 1.05rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(217, 93, 67, 0.35);
+        }
+
+        .panel-brand-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            line-height: 1.1;
+            color: #FFFFFF;
+        }
+
+        .panel-brand-sub {
+            font-size: 0.7rem;
+            color: rgba(220, 228, 242, 0.65);
+        }
+
+        .panel-top-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid rgba(220, 228, 242, 0.16);
+            background: var(--panel-navy-elevated);
+            color: #FFFFFF;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            text-decoration: none;
+            transition: var(--panel-ease);
+        }
+
+            .panel-top-btn:hover {
+                background: var(--panel-coral);
+                border-color: var(--panel-coral);
+                color: #FFFFFF;
+            }
+
+        .panel-profile-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 4px 10px 4px 5px;
+            border-radius: 999px;
+            border: 1px solid rgba(220, 228, 242, 0.16);
+            background: var(--panel-navy-elevated);
+            color: #FFFFFF;
+            font-size: 0.84rem;
+            font-weight: 600;
+            transition: var(--panel-ease);
+        }
+
+            .panel-profile-trigger:hover {
+                border-color: rgba(232, 116, 91, 0.6);
+                color: #FFFFFF;
+            }
+
+        .panel-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #E8745B, #FDE4DC);
+            color: var(--panel-ink);
+            font-size: 0.75rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dropdown-menu {
+            border: 1px solid var(--panel-line);
+            border-radius: var(--panel-radius);
+            box-shadow: 0 14px 34px rgba(26, 37, 58, 0.12);
+            padding: 6px;
+        }
+
+        .dropdown-item {
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.86rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .dropdown-item:hover {
+                background: var(--panel-coral-soft);
+                color: var(--panel-coral);
+            }
+
+        /* ========== SOL MENÜ ========== */
+        .panel-sidebar {
+            position: fixed;
+            top: var(--panel-topbar-h);
+            left: 0;
+            bottom: 0;
+            width: var(--panel-aside-w);
+            background: var(--panel-navy);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 14px 12px 20px;
+            z-index: 1040;
+            transition: transform 0.25s ease;
+        }
+
+        .panel-section-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--panel-sidebar-muted);
+            padding: 14px 12px 6px;
+        }
+
+        .panel-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 9px 12px;
+            margin-bottom: 3px;
+            border-radius: var(--panel-radius);
+            color: var(--panel-sidebar-fg);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: var(--panel-ease);
+        }
+
+            .panel-nav-link i {
+                font-size: 1.02rem;
+                color: rgba(220, 228, 242, 0.72);
+                transition: var(--panel-ease);
+            }
+
+            .panel-nav-link:hover {
+                background: var(--panel-navy-elevated);
+                color: #FFFFFF;
+            }
+
+                .panel-nav-link:hover i {
+                    color: #E8745B;
+                }
+
+            .panel-nav-link.is-current {
+                background: var(--panel-navy-active);
+                color: #FFFFFF;
+                font-weight: 600;
+                box-shadow: inset 3px 0 0 var(--panel-coral);
+            }
+
+                .panel-nav-link.is-current i {
+                    color: #E8745B;
+                }
+
+        /* ========== ANA ÇALIŞMA ALANI ========== */
+        .panel-shell {
+            margin-left: var(--panel-aside-w);
+            padding-top: var(--panel-topbar-h);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .panel-head {
+            padding: 22px 28px 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+            .panel-head h1 {
+                font-size: 1.35rem;
+                font-weight: 700;
+                margin: 0;
+            }
+
+        .breadcrumb {
+            margin: 0;
+            font-size: 0.82rem;
+        }
+
+        .breadcrumb-item a {
+            color: var(--panel-ink-muted);
+            text-decoration: none;
+        }
+
+            .breadcrumb-item a:hover {
+                color: var(--panel-coral);
+            }
+
+        .breadcrumb-item.active {
+            color: var(--panel-coral);
+            font-weight: 600;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: "/";
+            color: #C9B9B0;
+        }
+
+        .panel-content {
+            flex: 1;
+            padding: 16px 28px 28px;
+            min-width: 0;
+        }
+
+            .panel-content .table {
+                background: var(--panel-surface);
+            }
+
+            .panel-content .table-responsive,
+            .panel-content table {
+                max-width: 100%;
+            }
+
+        .btn-primary {
+            background-color: var(--panel-coral);
+            border-color: var(--panel-coral);
+        }
+
+            .btn-primary:hover,
+            .btn-primary:focus {
+                background-color: var(--panel-coral-dark);
+                border-color: var(--panel-coral-dark);
+            }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--panel-coral);
+            box-shadow: 0 0 0 3px rgba(217, 93, 67, 0.15);
+        }
+
+        .panel-footer {
+            border-top: 1px solid var(--panel-line);
+            background: var(--panel-surface);
+            padding: 14px 28px;
+            font-size: 0.8rem;
+            color: var(--panel-ink-muted);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+            .panel-footer a {
+                color: var(--panel-ink-muted);
+                text-decoration: none;
+            }
+
+                .panel-footer a:hover {
+                    color: var(--panel-coral);
+                }
+
+        .panel-backdrop {
+            display: none;
+            position: fixed;
+            inset: var(--panel-topbar-h) 0 0 0;
+            background: rgba(16, 24, 40, 0.45);
+            z-index: 1035;
+        }
+
+        @@media (max-width: 991.98px) {
+            .panel-sidebar {
+                transform: translateX(-100%);
+            }
+
+            body.panel-drawer-open .panel-sidebar {
+                transform: translateX(0);
+            }
+
+            body.panel-drawer-open .panel-backdrop {
+                display: block;
+            }
+
+            .panel-shell {
+                margin-left: 0;
+            }
+
+            .panel-topbar,
+            .panel-head,
+            .panel-content,
+            .panel-footer {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+        }
+    </style>
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+
+    <header class="panel-topbar">
+        <div class="d-flex align-items-center gap-3">
+            <button type="button" class="panel-top-btn d-lg-none" onclick="togglePanelDrawer()" aria-label="Menüyü Aç/Kapat">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <a href="/Admin" class="panel-brand">
+                <span class="panel-brand-badge">Hİ</span>
+                <div>
+                    <div class="panel-brand-title">Hamiyet İpek</div>
+                    <div class="panel-brand-sub">Yönetim Konsolu</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+            <a href="/" target="_blank" class="panel-top-btn" title="Portfolyoyu Görüntüle">
+                <i class="bi bi-box-arrow-up-right"></i>
+            </a>
+            <a asp-area="Admin" asp-controller="Message" asp-action="MessageList" class="panel-top-btn" title="Gelen Mesajlar">
+                <i class="bi bi-envelope"></i>
+            </a>
+
+            <div class="dropdown">
+                <button type="button" class="panel-profile-trigger" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="panel-avatar">Hİ</span>
+                    <span class="d-none d-md-inline">Hamiyet İpek</span>
+                    <i class="bi bi-chevron-down small opacity-75 d-none d-md-inline"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="/Admin/Profile/Index"><i class="bi bi-person-circle"></i> Profil Bilgileri</a></li>
+                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Setting" asp-action="Index"><i class="bi bi-sliders"></i> Sistem Ayarları</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li><a class="dropdown-item text-danger" href="/Login/Logout"><i class="bi bi-box-arrow-right"></i> Oturumu Kapat</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <aside class="panel-sidebar">
+        <div class="panel-section-label">Genel Bakış</div>
+        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="panel-nav-link @IsNavActive("Dashboard")">
+            <i class="bi bi-speedometer2"></i><span>Dashboard</span>
+        </a>
+
+        <div class="panel-section-label">Portfolyo Bölümleri</div>
+        <a asp-area="Admin" asp-controller="About" asp-action="Index" class="panel-nav-link @IsNavActive("About")">
+            <i class="bi bi-person-lines-fill"></i><span>Hakkımda</span>
+        </a>
+        <a asp-area="Admin" asp-controller="Education" asp-action="EducationList" class="panel-nav-link @IsNavActive("Education")">
+            <i class="bi bi-mortarboard"></i><span>Eğitim Geçmişi</span>
+        </a>
+        <a asp-area="Admin" asp-controller="Experience" asp-action="ExperienceList" class="panel-nav-link @IsNavActive("Experience")">
+            <i class="bi bi-briefcase"></i><span>İş Deneyimleri</span>
+        </a>
+        <a asp-area="Admin" asp-controller="Project" asp-action="ProjectList" class="panel-nav-link @IsNavActive("Project")">
+            <i class="bi bi-kanban"></i><span>Projeler</span>
+        </a>
+        <a asp-area="Admin" asp-controller="Category" asp-action="CategoryList" class="panel-nav-link @IsNavActive("Category")">
+            <i class="bi bi-folder2-open"></i><span>Proje Kategorileri</span>
+        </a>
+        <a asp-area="Admin" asp-controller="Skill" asp-action="SkillList" class="panel-nav-link @IsNavActive("Skill")">
+            <i class="bi bi-cpu"></i><span>Teknik Yetenekler</span>
+        </a>
+        <a asp-area="Admin" asp-controller="SkillCategory" asp-action="SkillCategoryList" class="panel-nav-link @IsNavActive("SkillCategory")">
+            <i class="bi bi-diagram-3"></i><span>Yetenek Grupları</span>
+        </a>
+        <a asp-area="Admin" asp-controller="Cv" asp-action="Index" class="panel-nav-link @IsNavActive("Cv")">
+            <i class="bi bi-file-earmark-person"></i><span>Özgeçmiş (CV)</span>
+        </a>
+
+        <div class="panel-section-label">İletişim & Yapılandırma</div>
+        <a asp-area="Admin" asp-controller="Message" asp-action="MessageList" class="panel-nav-link @IsNavActive("Message")">
+            <i class="bi bi-chat-left-text"></i><span>Mesaj Kutusu</span>
+        </a>
+        <a asp-area="Admin" asp-controller="Setting" asp-action="Index" class="panel-nav-link @IsNavActive("Setting")">
+            <i class="bi bi-gear"></i><span>Ayarlar</span>
+        </a>
+    </aside>
+
+    <div class="panel-backdrop" onclick="togglePanelDrawer()"></div>
+
+    <div class="panel-shell">
+        <div class="panel-head">
+            <h1>@pageTitle</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    @if (!string.IsNullOrEmpty(area))
+                    {
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-house me-1"></i>@area</a></li>
+                    }
+                    @if (!string.IsNullOrEmpty(controller))
+                    {
+                        <li class="breadcrumb-item"><span>@controller</span></li>
+                    }
+                    @if (!string.IsNullOrEmpty(action))
+                    {
+                        <li class="breadcrumb-item active" aria-current="page">@action</li>
+                    }
+                </ol>
+            </nav>
+        </div>
+
+        <main class="panel-content">
+            @RenderBody()
+        </main>
+
+        <footer class="panel-footer">
+            <span>© @DateTime.Now.Year Hamiyet İpek — Tüm hakları saklıdır.</span>
+            <span>
+                <a href="/" target="_blank">Siteyi Aç</a>
+                <span class="mx-2">•</span>
+                <span>v1.0</span>
+            </span>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function togglePanelDrawer() {
+            document.body.classList.toggle("panel-drawer-open");
+        }
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

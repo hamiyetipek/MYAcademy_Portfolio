@@ -1,0 +1,719 @@
+﻿@model MYAcademy_Portfolio.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    .overview-wrap {
+        color: #1A253A;
+        padding: 4px 0 28px;
+    }
+
+        .overview-wrap * {
+            box-sizing: border-box;
+        }
+
+    .overview-banner {
+        background: linear-gradient(135deg, #182236 0%, #263554 100%);
+        color: #FFFFFF;
+        border-radius: 16px;
+        padding: 24px 28px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+        box-shadow: 0 10px 26px rgba(24, 34, 54, 0.12);
+    }
+
+        .overview-banner h2 {
+            color: #FFFFFF;
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin: 0 0 4px;
+        }
+
+        .overview-banner p {
+            color: #DCE4F2;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+    .overview-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .btn-coral-solid {
+        background: #D95D43;
+        color: #FFFFFF;
+        border: 1px solid #D95D43;
+        padding: 9px 16px;
+        border-radius: 10px;
+        font-size: 0.86rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        transition: all 0.2s ease;
+    }
+
+        .btn-coral-solid:hover {
+            background: #BD4931;
+            border-color: #BD4931;
+            color: #FFFFFF;
+            transform: translateY(-1px);
+        }
+
+    .btn-navy-ghost {
+        background: rgba(255, 255, 255, 0.1);
+        color: #FFFFFF;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        padding: 9px 15px;
+        border-radius: 10px;
+        font-size: 0.86rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        transition: all 0.2s ease;
+    }
+
+        .btn-navy-ghost:hover {
+            background: rgba(255, 255, 255, 0.18);
+            color: #FFFFFF;
+        }
+
+    .kpi-ribbon {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+        gap: 14px;
+        margin-bottom: 24px;
+    }
+
+    .kpi-tile {
+        background: #FFFFFF;
+        border: 1px solid #ECE2DC;
+        border-top: 3px solid #D95D43;
+        border-radius: 14px;
+        padding: 16px 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .kpi-tile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26, 37, 58, 0.06);
+        }
+
+        .kpi-tile.tone-navy {
+            border-top-color: #182236;
+        }
+
+        .kpi-tile.tone-teal {
+            border-top-color: #0F766E;
+        }
+
+        .kpi-tile.tone-amber {
+            border-top-color: #D97706;
+        }
+
+    .kpi-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .kpi-title {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #5E6B82;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .kpi-badge-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        background: #FDE4DC;
+        color: #D95D43;
+    }
+
+    .kpi-tile.tone-navy .kpi-badge-icon {
+        background: #E6ECF5;
+        color: #182236;
+    }
+
+    .kpi-tile.tone-teal .kpi-badge-icon {
+        background: #DDF2E8;
+        color: #0F766E;
+    }
+
+    .kpi-tile.tone-amber .kpi-badge-icon {
+        background: #FEF3C7;
+        color: #B45309;
+    }
+
+    .kpi-number {
+        font-size: 1.75rem;
+        font-weight: 800;
+        line-height: 1.1;
+        color: #1A253A;
+    }
+
+    .kpi-note {
+        font-size: 0.76rem;
+        color: #7D899E;
+        margin-top: 4px;
+    }
+
+    .workspace-split {
+        display: grid;
+        grid-template-columns: 1.45fr 1fr;
+        gap: 20px;
+        align-items: start;
+    }
+
+    .workspace-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .panel-box {
+        background: #FFFFFF;
+        border: 1px solid #ECE2DC;
+        border-radius: 14px;
+        padding: 20px 22px;
+        box-shadow: 0 2px 10px rgba(26, 37, 58, 0.03);
+        min-width: 0;
+    }
+
+    .panel-box-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 14px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid #F3ECE8;
+    }
+
+        .panel-box-head h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .panel-box-head h3 i {
+                color: #D95D43;
+            }
+
+        .panel-box-head a {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #D95D43;
+            text-decoration: none;
+        }
+
+            .panel-box-head a:hover {
+                text-decoration: underline;
+            }
+
+    .feed-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .feed-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 12px 14px;
+        border: 1px solid #F2EAE5;
+        border-radius: 12px;
+        background: #FCF9F7;
+        transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+        .feed-row:hover {
+            border-color: #D95D43;
+            background: #FFFFFF;
+        }
+
+    .feed-sender {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+    }
+
+    .sender-initial {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: #182236;
+        color: #FFFFFF;
+        font-weight: 700;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .feed-meta {
+        min-width: 0;
+    }
+
+    .feed-subject {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #1A253A;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .feed-sub {
+        font-size: 0.78rem;
+        color: #5E6B82;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .feed-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+    }
+
+    .status-pill {
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.74rem;
+        font-weight: 600;
+    }
+
+    .pill-ok {
+        background: #DDF2E8;
+        color: #0F766E;
+    }
+
+    .pill-wait {
+        background: #FDE4DC;
+        color: #BD4931;
+    }
+
+    .btn-mini-link {
+        padding: 5px 11px;
+        border-radius: 8px;
+        border: 1px solid #E2D6CF;
+        background: #FFFFFF;
+        color: #1A253A;
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+        .btn-mini-link:hover {
+            background: #D95D43;
+            border-color: #D95D43;
+            color: #FFFFFF;
+        }
+
+    .project-mini-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .project-mini-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 11px 14px;
+        border-radius: 11px;
+        border: 1px solid #F2EAE5;
+        background: #FFFFFF;
+    }
+
+    .project-mini-title {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #1A253A;
+    }
+
+    .project-mini-cat {
+        font-size: 0.77rem;
+        color: #5E6B82;
+    }
+
+    .cat-meter {
+        margin-bottom: 14px;
+    }
+
+        .cat-meter:last-child {
+            margin-bottom: 0;
+        }
+
+    .cat-meter-head {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.84rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+        .cat-meter-head span:last-child {
+            color: #5E6B82;
+            font-weight: 500;
+        }
+
+    .cat-track {
+        height: 8px;
+        border-radius: 999px;
+        background: #F3ECE8;
+        overflow: hidden;
+    }
+
+    .cat-bar {
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #182236 0%, #D95D43 100%);
+    }
+
+    .shortcut-strip {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .shortcut-tile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 11px 14px;
+        border-radius: 10px;
+        border: 1px solid #ECE2DC;
+        background: #FCF9F7;
+        color: #1A253A;
+        text-decoration: none;
+        font-size: 0.86rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+        .shortcut-tile:hover {
+            background: #FDE4DC;
+            border-color: #D95D43;
+            color: #BD4931;
+        }
+
+    @@media (max-width: 991.98px) {
+        .workspace-split {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .feed-row {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .feed-right {
+            width: 100%;
+            justify-content: space-between;
+        }
+    }
+</style>
+
+<div class="overview-wrap">
+
+    <div class="overview-banner">
+        <div>
+            <h2>Portfolyo Kontrol Merkezi</h2>
+            <p>İçerik istatistiklerini, gelen iletişim taleplerini ve yayındaki projelerini tek ekrandan yönet.</p>
+        </div>
+
+        <div class="overview-actions">
+            <a asp-area="Admin"
+               asp-controller="Project"
+               asp-action="CreateProject"
+               class="btn-coral-solid">
+                <i class="bi bi-plus-lg"></i> Yeni Proje Ekle
+            </a>
+
+            <a asp-area="Admin"
+               asp-controller="Message"
+               asp-action="MessageList"
+               class="btn-navy-ghost">
+                <i class="bi bi-envelope"></i> Tüm Mesajlar
+            </a>
+        </div>
+    </div>
+
+    <div class="kpi-ribbon">
+        <div class="kpi-tile">
+            <div class="kpi-top">
+                <span class="kpi-title">Toplam Proje</span>
+                <span class="kpi-badge-icon"><i class="bi bi-folder2"></i></span>
+            </div>
+            <div class="kpi-number">@Model.TotalProjects</div>
+            <div class="kpi-note">Portfolyo arşivi</div>
+        </div>
+
+        <div class="kpi-tile tone-teal">
+            <div class="kpi-top">
+                <span class="kpi-title">Aktif Proje</span>
+                <span class="kpi-badge-icon"><i class="bi bi-check2-circle"></i></span>
+            </div>
+            <div class="kpi-number">@Model.ActiveProjects</div>
+            <div class="kpi-note">Yayında olanlar</div>
+        </div>
+
+        <div class="kpi-tile tone-navy">
+            <div class="kpi-top">
+                <span class="kpi-title">Yetenekler</span>
+                <span class="kpi-badge-icon"><i class="bi bi-cpu"></i></span>
+            </div>
+            <div class="kpi-number">@Model.TotalSkills</div>
+            <div class="kpi-note">Tanımlı teknoloji</div>
+        </div>
+
+        <div class="kpi-tile">
+            <div class="kpi-top">
+                <span class="kpi-title">Deneyimler</span>
+                <span class="kpi-badge-icon"><i class="bi bi-briefcase"></i></span>
+            </div>
+            <div class="kpi-number">@Model.TotalExperiences</div>
+            <div class="kpi-note">Kariyer kaydı</div>
+        </div>
+
+        <div class="kpi-tile tone-navy">
+            <div class="kpi-top">
+                <span class="kpi-title">Eğitimler</span>
+                <span class="kpi-badge-icon"><i class="bi bi-mortarboard"></i></span>
+            </div>
+            <div class="kpi-number">@Model.TotalEducations</div>
+            <div class="kpi-note">Akademik geçmiş</div>
+        </div>
+
+        <div class="kpi-tile tone-teal">
+            <div class="kpi-top">
+                <span class="kpi-title">Toplam Mesaj</span>
+                <span class="kpi-badge-icon"><i class="bi bi-chat-dots"></i></span>
+            </div>
+            <div class="kpi-number">@Model.TotalMessages</div>
+            <div class="kpi-note">Tüm iletişimler</div>
+        </div>
+
+        <div class="kpi-tile tone-amber">
+            <div class="kpi-top">
+                <span class="kpi-title">Okunmamış</span>
+                <span class="kpi-badge-icon"><i class="bi bi-bell"></i></span>
+            </div>
+            <div class="kpi-number">@Model.UnreadMessages</div>
+            <div class="kpi-note">Yanıt bekleyen</div>
+        </div>
+    </div>
+
+    <div class="workspace-split">
+
+        <div class="workspace-stack">
+            <div class="panel-box">
+                <div class="panel-box-head">
+                    <h3><i class="bi bi-inbox"></i> Son Gelen Mesajlar</h3>
+                    <a asp-area="Admin"
+                       asp-controller="Message"
+                       asp-action="MessageList">
+                        Tümünü Gör
+                    </a>
+                </div>
+
+                @if (!Model.RecentMessages.Any())
+                {
+                    <p class="text-muted mb-0" style="font-size:0.88rem;">Henüz gelen mesaj bulunmuyor.</p>
+                }
+                else
+                {
+                    <div class="feed-list">
+                        @foreach (var message in Model.RecentMessages)
+                        {
+                            var initial = !string.IsNullOrWhiteSpace(message.NameSurname)
+                            ? message.NameSurname.Trim().Substring(0, 1).ToUpper()
+                            : "M";
+
+                            <div class="feed-row">
+                                <div class="feed-sender">
+                                    <span class="sender-initial">@initial</span>
+                                    <div class="feed-meta">
+                                        <div class="feed-subject">@message.Subject</div>
+                                        <div class="feed-sub">@message.NameSurname • @message.Email • @message.SendDate.ToString("dd.MM.yyyy HH:mm")</div>
+                                    </div>
+                                </div>
+
+                                <div class="feed-right">
+                                    <span class="status-pill @(message.IsRead ? "pill-ok" : "pill-wait")">
+                                        @(message.IsRead ? "Okundu" : "Yeni")
+                                    </span>
+
+                                    <a asp-area="Admin"
+                                       asp-controller="Message"
+                                       asp-action="MessageDetail"
+                                       asp-route-id="@message.MessageId"
+                                       class="btn-mini-link">
+                                        Aç
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+
+            <div class="panel-box">
+                <div class="panel-box-head">
+                    <h3><i class="bi bi-kanban"></i> Son Eklenen Projeler</h3>
+                    <a asp-area="Admin"
+                       asp-controller="Project"
+                       asp-action="ProjectList">
+                        Proje Listesi
+                    </a>
+                </div>
+
+                @if (!Model.RecentProjects.Any())
+                {
+                    <p class="text-muted mb-0" style="font-size:0.88rem;">Henüz proje eklenmemiş.</p>
+                }
+                else
+                {
+                    <div class="project-mini-list">
+                        @foreach (var project in Model.RecentProjects)
+                        {
+                            <div class="project-mini-item">
+                                <div>
+                                    <div class="project-mini-title">@project.Title</div>
+                                    <div class="project-mini-cat">@(project.Category?.CategoryName ?? "Kategorisiz")</div>
+                                </div>
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="status-pill pill-ok">Yayında</span>
+                                    <a asp-area="Admin"
+                                       asp-controller="Project"
+                                       asp-action="UpdateProject"
+                                       asp-route-id="@project.ProjectId"
+                                       class="btn-mini-link">
+                                        Düzenle
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="workspace-stack">
+            <div class="panel-box">
+                <div class="panel-box-head">
+                    <h3><i class="bi bi-pie-chart"></i> Kategori Dağılımı</h3>
+                </div>
+
+                @if (!Model.CategoryCounts.Any())
+                {
+                    <p class="text-muted mb-0" style="font-size:0.88rem;">Henüz kategori kaydı yok.</p>
+                }
+                else
+                {
+                    @foreach (var category in Model.CategoryCounts)
+                    {
+                        var ratio = Model.TotalProjects > 0
+                        ? (category.ProjectCount * 100.0 / Model.TotalProjects).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)
+                        : "0";
+
+                        <div class="cat-meter">
+                            <div class="cat-meter-head">
+                                <span>@category.CategoryName</span>
+                                <span>@category.ProjectCount proje</span>
+                            </div>
+
+                            <div class="cat-track">
+                                <div class="cat-bar" style="width:@(ratio)%"></div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+            <div class="panel-box">
+                <div class="panel-box-head">
+                    <h3><i class="bi bi-lightning-charge"></i> Hızlı İşlemler</h3>
+                </div>
+
+                <div class="shortcut-strip">
+                    <a asp-area="Admin"
+                       asp-controller="Project"
+                       asp-action="CreateProject"
+                       class="shortcut-tile">
+                        <span><i class="bi bi-folder-plus me-2"></i> Yeni Proje Oluştur</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+
+                    <a asp-area="Admin"
+                       asp-controller="Skill"
+                       asp-action="SkillList"
+                       class="shortcut-tile">
+                        <span><i class="bi bi-cpu me-2"></i> Yetenekleri Yönet</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+
+                    <a asp-area="Admin"
+                       asp-controller="Message"
+                       asp-action="MessageList"
+                       class="shortcut-tile">
+                        <span><i class="bi bi-envelope-open me-2"></i> Gelen Kutusuna Git</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+
+                    <a asp-area=""
+                       asp-controller="Default"
+                       asp-action="Index"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="shortcut-tile">
+                        <span><i class="bi bi-globe2 me-2"></i> Canlı Siteyi Önizle</span>
+                        <i class="bi bi-box-arrow-up-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
